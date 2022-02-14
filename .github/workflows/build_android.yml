@@ -24,7 +24,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: "2.5.1"
+          flutter-version: "2.10.0"
 
       - name: Build APK
         run: flutter clean && flutter pub get && flutter build apk --release --dart-define=CUSTOM_ENV=${{ github.event.inputs.BASE_URL }}
