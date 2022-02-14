@@ -9,7 +9,7 @@ class ApiHandlerService {
     HttpHeaders.contentTypeHeader: 'application/json',
   };
 
-  static const String _baseUrl = '';
+  static const String _baseUrl = String.fromEnvironment('BASE_URL');
 
   static Future<http.Response> get({
     required String endpoint,

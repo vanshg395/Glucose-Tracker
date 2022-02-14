@@ -3,18 +3,10 @@ name: "Build Android APK"
 on:
   workflow_dispatch:
     inputs:
-      BRANCH:
-        description: "Branch from which build has been made"
+      BASE_URL:
+        description: "Server Base Url"
         required: true
-        default: "dev"
-      CUSTOM_ENV:
-        description: "Backend Environment"
-        required: true
-        default: "dev"
-      FLAVOR:
-        description: "Flavor of the app"
-        required: true
-        default: "dev"
+        default: ""
 
 jobs:
   build:
@@ -35,7 +27,7 @@ jobs:
           flutter-version: "2.5.1"
 
       - name: Build APK
-        run: flutter clean && flutter pub get && flutter build apk --release
+        run: flutter clean && flutter pub get && flutter build apk --release --dart-define=CUSTOM_ENV=${{ github.event.inputs.BASE_URL }}
 
       - name: Push to GH Releases
         uses: ncipollo/release-action@v1
