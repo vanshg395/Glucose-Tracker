@@ -1,6 +1,20 @@
 name: "Build Android APK"
 
 on:
+  workflow_dispatch:
+    inputs:
+      BRANCH:
+        description: "Branch from which build has been made"
+        required: true
+        default: "dev"
+      CUSTOM_ENV:
+        description: "Backend Environment"
+        required: true
+        default: "dev"
+      FLAVOR:
+        description: "Flavor of the app"
+        required: true
+        default: "dev"
 
 jobs:
   build:
