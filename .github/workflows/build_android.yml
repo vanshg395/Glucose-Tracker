@@ -1,0 +1,45 @@
+name: "Build Android APK"
+
+on:
+  workflow_dispatch:
+    inputs:
+      BRANCH:
+        description: "Branch from which build has been made"
+        required: true
+        default: "dev"
+      CUSTOM_ENV:
+        description: "Backend Environment"
+        required: true
+        default: "dev"
+      FLAVOR:
+        description: "Flavor of the app"
+        required: true
+        default: "dev"
+
+jobs:
+  build:
+    name: Build & Release
+    runs-on: macos-latest
+    steps:
+      - name: Pull Code
+        uses: actions/checkout@v1
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: "15.x"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: "2.5.1"
+
+      - name: Build APK
+        run: flutter clean && flutter pub get && flutter build apk --release
+
+      - name: Push to GH Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk"
+          tag: v${{ github.run_number }}
+          token: ${{ secrets.TOKEN }}
