@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Glucose",
+            "type": "dart",
+            "request": "launch",
+            "args": [
+                "--dart-define=BASE_URL=3.108.61.24"
+            ]
+        },
+    ]
+}
