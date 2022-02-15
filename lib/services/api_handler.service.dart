@@ -1,15 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:glucose_tracker/services/shared_prefernces.service.dart';
 import 'package:http/http.dart' as http;
 
 class ApiHandlerService {
   ApiHandlerService._();
 
-  static const Map<String, dynamic> _defaultHeaders = {
+  static final Map<String, dynamic> _defaultHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.authorizationHeader: sharedPreferenceService.accessToken,
   };
 
-  static const String _baseUrl = String.fromEnvironment('BASE_URL');
+  // static const String _baseUrl = String.fromEnvironment('BASE_URL');
+  static const String _baseUrl = 'http://3.108.61.24';
 
   static Future<http.Response> get({
     required String endpoint,
@@ -37,7 +41,7 @@ class ApiHandlerService {
         ..._defaultHeaders,
         if (headers != null) ...headers,
       },
-      body: body,
+      body: json.encode(body),
     );
   }
 
@@ -53,7 +57,7 @@ class ApiHandlerService {
         ..._defaultHeaders,
         if (headers != null) ...headers,
       },
-      body: body,
+      body: json.encode(body),
     );
   }
 
@@ -69,7 +73,7 @@ class ApiHandlerService {
         ..._defaultHeaders,
         if (headers != null) ...headers,
       },
-      body: body,
+      body: json.encode(body),
     );
   }
 }

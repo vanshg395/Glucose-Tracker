@@ -10,10 +10,12 @@ class BloodGlucoseScreen extends StatefulWidget {
 }
 
 class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
-  final BloodGlucoseBloc _bloodGlucoseBloc = BloodGlucoseBloc();
+  late BloodGlucoseBloc _bloodGlucoseBloc;
 
   @override
   void initState() {
+    _bloodGlucoseBloc = BloodGlucoseBloc();
+    _bloodGlucoseBloc.getRecords();
     super.initState();
   }
 
