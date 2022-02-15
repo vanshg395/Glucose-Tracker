@@ -12,7 +12,10 @@ class BloodGlucoseBloc extends BaseBloc {
       BehaviorSubject<BloodGlucoseResponse?>.seeded(null);
   int _page = 1;
 
+  int get page => _page;
+
   Future<void> createRecord() async {}
+
   Future<void> getRecords({bool refresh = false}) async {
     if (refresh) {
       _page = 1;

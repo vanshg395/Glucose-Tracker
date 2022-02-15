@@ -9,11 +9,10 @@ class ApiHandlerService {
 
   static final Map<String, dynamic> _defaultHeaders = {
     HttpHeaders.contentTypeHeader: 'application/json',
-    HttpHeaders.authorizationHeader: sharedPreferenceService.accessToken,
+    HttpHeaders.authorizationHeader: sharedPreferenceService.accessToken ?? '',
   };
 
-  // static const String _baseUrl = String.fromEnvironment('BASE_URL');
-  static const String _baseUrl = 'http://3.108.61.24';
+  static const String _baseUrl = String.fromEnvironment('BASE_URL');
 
   static Future<http.Response> get({
     required String endpoint,

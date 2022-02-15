@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:glucose_tracker/blocs/blood_glucose.bloc.dart';
 
+import 'package:glucose_tracker/models/blood_glucose_response.model.dart';
+import 'package:glucose_tracker/modules/blood_glucose/components/record_card.dart';
+import 'package:lazy_loading_list/lazy_loading_list.dart';
+
 class BloodGlucoseScreen extends StatefulWidget {
   const BloodGlucoseScreen({Key? key}) : super(key: key);
 
@@ -15,8 +19,25 @@ class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
   @override
   void initState() {
     _bloodGlucoseBloc = BloodGlucoseBloc();
-    _bloodGlucoseBloc.getRecords();
+    _bloodGlucoseBloc.getRecords(refresh: true);
     super.initState();
+  }
+
+  Widget buildRecordList(BloodGlucoseResponse data) {
+    return ListView.separated(
+      itemBuilder: (BuildContext ctx, int i) => LazyLoadingList(
+        loadMore: _bloodGlucoseBloc.getRecords,
+        child: RecordCard(
+          record: data.records[i],
+        ),
+        index: i,
+        hasMore: _bloodGlucoseBloc.page < data.totalPages,
+      ),
+      separatorBuilder: (BuildContext ctx, int i) => const Divider(
+        thickness: 1,
+      ),
+      itemCount: data.records.length,
+    );
   }
 
   @override
@@ -31,7 +52,24 @@ class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
         ),
         backgroundColor: Colors.teal,
       ),
-      body: Container(),
+      body: StreamBuilder<BloodGlucoseResponse?>(
+          stream: _bloodGlucoseBloc.bloodGlucoseRecordsController.stream,
+          builder: (BuildContext context,
+              AsyncSnapshot<BloodGlucoseResponse?> snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: Text(
+                  'Something Went Wrong',
+                ),
+              );
+            } else if (snapshot.hasData) {
+              return buildRecordList(snapshot.data!);
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
     );
   }
 }
