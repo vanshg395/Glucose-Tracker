@@ -6,7 +6,7 @@ on:
       BASE_URL:
         description: "Server Base Url"
         required: true
-        default: "3.108.61.24"
+        default: "http://3.108.61.24"
 
 jobs:
   build:
