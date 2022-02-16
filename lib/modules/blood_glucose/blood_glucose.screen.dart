@@ -4,6 +4,7 @@ import 'package:glucose_tracker/blocs/blood_glucose.bloc.dart';
 
 import 'package:glucose_tracker/models/blood_glucose_response.model.dart';
 import 'package:glucose_tracker/modules/blood_glucose/components/record_card.dart';
+import 'package:glucose_tracker/routes.dart';
 import 'package:lazy_loading_list/lazy_loading_list.dart';
 
 class BloodGlucoseScreen extends StatefulWidget {
@@ -50,26 +51,48 @@ class _BloodGlucoseScreenState extends State<BloodGlucoseScreen> {
             color: Colors.white,
           ),
         ),
+        titleSpacing: 0,
         backgroundColor: Colors.teal,
       ),
       body: StreamBuilder<BloodGlucoseResponse?>(
-          stream: _bloodGlucoseBloc.bloodGlucoseRecordsController.stream,
-          builder: (BuildContext context,
-              AsyncSnapshot<BloodGlucoseResponse?> snapshot) {
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text(
-                  'Something Went Wrong',
-                ),
-              );
-            } else if (snapshot.hasData) {
-              return buildRecordList(snapshot.data!);
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
+        stream: _bloodGlucoseBloc.bloodGlucoseRecordsController.stream,
+        builder: (BuildContext context,
+            AsyncSnapshot<BloodGlucoseResponse?> snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text(
+                'Something Went Wrong',
+              ),
+            );
+          } else if (snapshot.hasData) {
+            return buildRecordList(snapshot.data!);
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+      bottomNavigationBar: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            Routes.addGlucoseRecord,
+          );
+        },
+        child: Container(
+          alignment: Alignment.center,
+          height: 60,
+          color: Colors.teal,
+          child: const Text(
+            'ADD RECORD',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
